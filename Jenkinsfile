@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Pull') {
       steps {
-        git(url: 'git@github.com:arjones/jenkins-git-maven-docker.git', branch: 'master')
+        git(url: 'https://github.com/arjones/jenkins-git-maven-docker.git', branch: 'master')
       }
     }
   }
