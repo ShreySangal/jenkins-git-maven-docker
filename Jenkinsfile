@@ -16,13 +16,13 @@ pipeline {
 
 
   stages {
-    stage('Pull source code from github') {
+    stage('Pull code from github') {
       steps {
         git(url: 'https://github.com/arjones/jenkins-git-maven-docker.git', branch: 'master')
       }
     }
 
-    stage ('Initialize') {
+    stage ('Check env') {
       steps {
         sh '''
             echo "PATH = ${PATH}"
@@ -31,23 +31,19 @@ pipeline {
       }
     }
 
-    // Using a Docker to build
-    stage('Example Build') {
+    // Using a Docker Maven to build
+    stage('Build app') {
       agent { docker 'maven:3.3.9' }
       steps {
           sh 'mvn -B clean verify'
-          // docker.build "arjones/dummy:1.0-SNAPSHOT"
-
-          sh 'docker build -t arjones/dummy:1.0-SNAPSHOT .'
       }
     }
 
-    // Using a Docker to build
-    // stage('Example Build') {
-    //   agent { docker 'maven:3.3.9' }
-    //   steps {
-    //       sh 'mvn -B clean verify'
-    //   }
-    // }
+    stage('Build docker image') {
+      steps {
+        sh 'docker build -t arjones/dummy:1.0-SNAPSHOT .'
+      }
+    }
+
   }
 }
