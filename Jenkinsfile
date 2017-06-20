@@ -36,7 +36,9 @@ pipeline {
       agent { docker 'maven:3.3.9' }
       steps {
           sh 'mvn -B clean verify'
-          docker.build "arjones/dummy:1.0-SNAPSHOT"
+          // docker.build "arjones/dummy:1.0-SNAPSHOT"
+
+          sh 'docker build -t arjones/dummy:1.0-SNAPSHOT .'
       }
     }
 
